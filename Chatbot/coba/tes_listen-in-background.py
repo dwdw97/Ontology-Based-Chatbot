@@ -4,9 +4,11 @@ from gtts import gTTS
 import os
 
 def callback(recognizer, audio):
+    global r
     text = ""
     try:
-        text = r.recognize_google(audio, language="id").lower()
+        audio = sr.Recognizer().listen(sr.Microphone(), phrase_time_limit=2)
+        text = recognizer.recognize_google(audio, language="id").lower()
         print('You said: ', text)
         if(text == "selamat pagi"):
             response = "selamat pagi juga"
@@ -15,10 +17,11 @@ def callback(recognizer, audio):
         else:
             response = "Maaf, saya tidak dapat memahami ucapan anda"
     except:
-        pass
-        # print("Maaf, tidak dapat memahami ucapan anda")
-        # response = "Maaf, saya tidak dapat memahami ucapan anda"
+        # pass
+        print("Maaf, tidak dapat memahami ucapan anda")
+        response = "Maaf, saya tidak dapat memahami ucapan anda"
     # except sr.UnknownValueError:
+    #     print("Google Speech Recognition could not understand audio")
     #     response = "Google Speech Recognition could not understand audio"
     # except sr.RequestError as e:
     #     response = "Could not request results from Google Speech Recognition service; {0}".format(e)
