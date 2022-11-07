@@ -8,7 +8,11 @@ import winsound
 import playsound
 
 def backgroundListening():
+	responded = True
 	while True:
+		if(responded):
+			winsound.PlaySound("input_ok2.wav", winsound.SND_ALIAS | winsound.SND_ASYNC)
+		responded = False
 		text = ""
 		r = sr.Recognizer()
 		with sr.Microphone() as source:
@@ -31,13 +35,19 @@ def backgroundListening():
 				elif(text == "banyak"):
 					response = "maaf saya sibuk, nggak bisa bantu dulu"
 				else:
-					response = "Maaf, saya tidak dapat memahami ucapan anda"
+					text = ""
+					# response = "Maaf, saya tidak dapat memahami ucapan anda"
 			except:
 				print("Sorry, could not recognize your saying")
-				response = "Maaf, saya tidak dapat memahami ucapan anda"
+				# response = "Maaf, saya tidak dapat memahami ucapan anda"
 			
-			if(text!=""):
-				getResponse(response)
+		if(text!=""):
+			getResponse(response)
+			responded = True
+			# threading.Thread(target=getResponse(response)).start()
+			# for a in range(3): 
+			# 	print(a)
+			# 	time.sleep(1)
 
 def getResponse(response):
 	tts = gTTS(text=response, lang='id', slow=False)
